@@ -12,8 +12,8 @@ public class VehicleControls : MonoBehaviour {
 	public float speed_max = 10.0f;
 	public float acceleration = 0.5f;
 	public float reverseSpeed = 0.4f;
-	public float turn_acc = 0.3f;
-	public float turn_max = 4.0f;
+	public float turn_acc = 0.5f;
+	public float turn_max = 10.0f;
 	float turn_amount = 0.0f;
 
 	float turnDecay = 2.0f;
