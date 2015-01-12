@@ -11,15 +11,15 @@ public class VehicleControls : MonoBehaviour {
 	public KeyCode key_right = KeyCode.D;
 	public float speed_max = 10.0f;
 	public float acceleration = 0.5f;
-	public float reverseSpeed = 0.3f;
+	public float reverseSpeed = 0.4f;
 	public float turn_acc = 0.3f;
 	public float turn_max = 4.0f;
 	float turn_amount = 0.0f;
 
 	float turnDecay = 2.0f;
 	float turnThres = 0.1f;
-	float speedDecay = 1.05f;
-	float speedThres = 0.1f;
+	float speedDecay = 1.1f;
+	float speedThres = 0.3f;
 
 	void OnGUI(){
 		if (debug) {
