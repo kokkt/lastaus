@@ -54,21 +54,27 @@ public class PickUpScript : MonoBehaviour {
 	void PickUpItem(){
 		if (!pickedUpItem) {
 				RaycastHit hit;
-				if (Physics.Raycast (fork.position, fork.forward, out hit, pickup_range)) {
-						Debug.Log (hit.transform);
-
-						if (!hit.transform.CompareTag ("Player")) {
-                            SetAsPickedUp(hit.transform);
-						}
-				} else {
-						Debug.Log ("No item");
+			if (Physics.Raycast (fork.position, fork.up, out hit, pickup_range)) {
+				Debug.Log (hit.transform);
+				
+				if (!hit.transform.CompareTag ("Player")) {
+            		SetAsPickedUp(hit.transform);
 				}
+					
+			} else {
+				Debug.Log ("No item");
+			}
 		} else {
             ReleaseItem();
 		}
 	}
     void SetAsPickedUp(Transform target)
     {
+		// Check if we picked up a crate
+		Crate c = target.GetComponentInChildren<Crate> ();
+		if (c) {
+			c.PickedUp();
+		}
         pickedUpItem = target;
         itemOffset.y = target.collider.bounds.size.y/2 - (target.position.y - fork.position.y); //
         pickedUpItem.Translate(itemOffset);
@@ -76,10 +82,15 @@ public class PickUpScript : MonoBehaviour {
 
     }
     void ReleaseItem()
-    {
-        Vector3 newPos = pickedUpItem.position;
-        newPos.y = pickedUpItem.collider.bounds.size.y / 2;
-        pickedUpItem.position = newPos;
+	{
+		Crate c = pickedUpItem.GetComponent<Crate> ();
+		if (c) {
+						c.Released ();
+				} else {
+						Vector3 newPos = pickedUpItem.position;
+						newPos.y = pickedUpItem.collider.bounds.size.y / 2;
+						pickedUpItem.position = newPos;
+				}
         pickedUpItem.parent = null;
         pickedUpItem = null;
     }

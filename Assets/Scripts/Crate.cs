@@ -2,28 +2,26 @@
 using System.Collections;
 
 public class Crate : MonoBehaviour {
-    bool falling = true;
+	Vector3 position = new Vector3();
+    public bool falling = true;
 
 	// Use this for initialization
 	void Start () {
-        gameObject.AddComponent<Rigidbody>();
+		if (!rigidbody) {
+			gameObject.AddComponent<Rigidbody> ();
+		}
+		rigidbody.freezeRotation = true;
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (falling)
-        {
-            transform.Translate(Vector3.down * Time.deltaTime * 0.5f);
-        }
 	}
 
-    void OnEnterCollision(Collision c)
-    {
-        falling = false;
-    }
-    void OnExitCollision(Collision c)
-    {
-        falling = true;
-    }
+	public void PickedUp(){
+		rigidbody.isKinematic = true;
+	}
+	public void Released(){
+		rigidbody.isKinematic = false;
+	}
 }
