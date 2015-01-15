@@ -56,6 +56,7 @@ public class PickUpScript : MonoBehaviour {
 				RaycastHit hit;
 				if (Physics.Raycast (fork.position, fork.forward, out hit, pickup_range)) {
 						Debug.Log (hit.transform);
+
 						if (!hit.transform.CompareTag ("Player")) {
                             SetAsPickedUp(hit.transform);
 						}
