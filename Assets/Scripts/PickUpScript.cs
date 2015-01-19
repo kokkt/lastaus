@@ -7,7 +7,7 @@ public class PickUpScript : MonoBehaviour {
 	public KeyCode key_pickup = KeyCode.E;
     public KeyCode key_lift_up = KeyCode.R;
     public KeyCode key_lift_down = KeyCode.F;
-    public float lift_speed = 0.5f;
+    public float lift_speed = 0.8f;
     public float[] fork_min_max = {0.0f, 2.0f};
     Vector3 lift = new Vector3();
     Vector3 itemOffset = new Vector3();

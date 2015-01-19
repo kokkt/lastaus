@@ -14,6 +14,8 @@ public class VehicleControls : MonoBehaviour {
 	public float reverseSpeed = 0.4f;
 	public float turn_acc = 0.5f;
 	public float turn_max = 10.0f;
+	public static bool blocky_controls = true;
+	Transform vehicle;
 	float turn_amount = 0.0f;
 
 	float turnDecay = 2.0f;
@@ -29,7 +31,7 @@ public class VehicleControls : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-	
+		vehicle = transform;
 	}
 	// Update is called once per frame
 	void Update () {
@@ -39,14 +41,14 @@ public class VehicleControls : MonoBehaviour {
 	}
 	void ApplyPhysics(){
 		if (turn_amount < -turnThres || turn_amount > turnThres) {
-			turn_amount /= turnDecay;
+				turn_amount /= turnDecay;
 		} else {
-			turn_amount = 0;
+				turn_amount = 0;
 		}
 		if (moveVector.magnitude < -speedThres || moveVector.magnitude > speedThres) {
-			moveVector = moveVector.normalized * moveVector.magnitude / speedDecay;
+				moveVector = moveVector.normalized * moveVector.magnitude / speedDecay;
 		} else {
-			moveVector *= 0;
+				moveVector *= 0;
 		}
 	}
 	void Move(){
@@ -56,30 +58,49 @@ public class VehicleControls : MonoBehaviour {
 		if (limitedMove.magnitude > speed_max) {
 			limitedMove = limitedMove.normalized * speed_max;
 		}
-		transform.Translate (limitedMove*Time.deltaTime);
+		vehicle.Translate (limitedMove*Time.deltaTime);
 
-		transform.Rotate(Vector3.up * turn_amount * Mathf.Sign (moveVector.z));
+		vehicle.Rotate(Vector3.up * turn_amount * Mathf.Sign (moveVector.z));
 
 	}
 
 	void UpdateControls(){
-		if(Input.GetKey(key_accelerate))
-		{
-			Accelerate(Vector3.forward);
-		}
-		if(Input.GetKey(key_reverse))
-		{
-			Reverse (Vector3.back);
-		}
-		if(Input.GetKey(key_left))
-		{
-			Turn (-turn_acc);
-		}
-		if(Input.GetKey(key_right))
-		{
-			Turn (turn_acc);
+		if (blocky_controls) {
+				if (Input.GetKeyDown (key_accelerate)) {
+					BlockyMove (Vector3.forward);
+				}
+				if (Input.GetKeyDown (key_reverse)) {
+					BlockyMove (Vector3.back);
+				}
+				if (Input.GetKeyDown (key_left)) {
+					BlockyTurn (-90.0f);
+				}
+				if (Input.GetKeyDown (key_right)) {
+					BlockyTurn (90.0f);
+				}
+
+		} else {
+				if (Input.GetKey (key_accelerate)) {
+						Accelerate (Vector3.forward);
+				}
+				if (Input.GetKey (key_reverse)) {
+						Reverse (Vector3.back);
+				}
+				if (Input.GetKey (key_left)) {
+						Turn (-turn_acc);
+				}
+				if (Input.GetKey (key_right)) {
+						Turn (turn_acc);
+				}
 		}
 
+	}
+
+	void BlockyMove(Vector3 direction){
+		vehicle.Translate (direction);
+	}
+	void BlockyTurn(float amount){
+		vehicle.Rotate (Vector3.up * amount);
 	}
 
 	void Accelerate(Vector3 direction){
